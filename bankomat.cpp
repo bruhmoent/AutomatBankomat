@@ -4,6 +4,8 @@
 #include <string>
 #include <algorithm>
 #include <iterator>
+#include <cctype>
+#include <boost/algorithm/string.hpp>
 using namespace std;
 class Karta
 {
@@ -11,6 +13,10 @@ class Karta
 public:
     string rodzaj;
     string temp;
+    Karta()
+    {
+
+    }
     ~Karta()
     {
     }
@@ -41,6 +47,7 @@ public:
 
 inline vector<Karta*> addCards(vector<Karta*> karty, string karta)
 {
+    boost::algorithm::to_lower(karta);
     karty.push_back(new Karta(karta));
     return karty;
 }
@@ -50,6 +57,7 @@ void checkCards(vector<Karta*> tempList, string* card)
    
     string cardRzut = "";
     cardRzut = *card;
+    boost::algorithm::to_lower(cardRzut);
     if (std::find_if(tempList.begin(), tempList.end(), [&cardRzut](Karta* my) { return my->getValue(cardRzut) == 0; }) != tempList.end())
    {
         cout << "\nKarta znaleziona.\n";
@@ -70,14 +78,15 @@ void showCards(vector<Karta*> tempList)
     }
 }
 
-
-
 int main(int argc, char** argv) {
     string karta;
     string* choosenCard;
+    Karta* pinPtr = new Karta;
     string choosenCardE = "";
+
     choosenCard = &choosenCardE;
     int repeat;
+    int pin;
     vector<Karta*> karty{};
     cout << "\nPodaj liczbe akceptowalnych kart\n";
     cin >> repeat;
@@ -90,10 +99,12 @@ int main(int argc, char** argv) {
     cout << "\nBANKOMAT QUAGMIRE ATM\n";
     cout << "\nKARTY AKCEPTOWANE PRZEZ BANKOMAT:\n";
     showCards(karty);
-    cout << "\nWloz karte.\n";
+    cout << "\nWloz karte: \n";
     cin >> *choosenCard;
-
+ 
     checkCards(karty, choosenCard);
-
+    cout << "\nWprowadz pin: \n";
+    cin >> pin;
+    pinPtr->checkForPin(pin);
     return 0;
 }
