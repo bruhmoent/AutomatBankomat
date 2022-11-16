@@ -3,29 +3,17 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-
-
-
 #include <iterator>
 using namespace std;
-
-
-
 class Karta
 {
-
-
 
 public:
     string rodzaj;
     string temp;
     ~Karta()
     {
-
-
-
     }
-
     Karta(string rodzaj) {
         this->rodzaj = rodzaj;
     }
@@ -40,10 +28,15 @@ public:
             cout << "\nPin jest nie poprawny.\n";
         }
     }
-    int getValue() const
+    auto getValue(string kar) const
     {
-        return  0;
+
+        if (kar == this->rodzaj)
+            return  0;
+        else
+            return 1;
     }
+    
 };
 
 inline vector<Karta*> addCards(vector<Karta*> karty, string karta)
@@ -57,7 +50,7 @@ void checkCards(vector<Karta*> tempList, string* card)
    
     string cardRzut = "";
     cardRzut = *card;
-    if (std::find_if(tempList.begin(), tempList.end(), [](Karta* my) { return my->getValue() == 0; }) != tempList.end())
+    if (std::find_if(tempList.begin(), tempList.end(), [&cardRzut](Karta* my) { return my->getValue(cardRzut) == 0; }) != tempList.end())
    {
         cout << "\nKarta znaleziona.\n";
    }
@@ -93,6 +86,7 @@ int main(int argc, char** argv) {
         cin >> karta;
         karty = addCards(karty, karta);
     }
+
     cout << "\nBANKOMAT QUAGMIRE ATM\n";
     cout << "\nKARTY AKCEPTOWANE PRZEZ BANKOMAT:\n";
     showCards(karty);
@@ -100,7 +94,6 @@ int main(int argc, char** argv) {
     cin >> *choosenCard;
 
     checkCards(karty, choosenCard);
-
 
     return 0;
 }
